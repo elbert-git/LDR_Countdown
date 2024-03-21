@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+    *{padding: 0; margin: 0; box-sizing: border-box;}
+    *{
+      font-family: "Open Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings:"wdth" 100;
+    }
+    /* *{outline: red 3px solid;} */
+    html, body{
+      background-color: #ffbb4d;
+      height: 100%;
+      max-height: 100%;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    body{
+      display: flex;
+    }
+    img{max-height: 100%;}
+    .half-pane{width: 50%; height: 100%;}
+    .right-pane{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .left-pane{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #count{
+      font-weight: 900;
+      font-size: 6rem;
+      opacity: 0.4;
+      margin: 0rem;
+    }
+    #line1, #line2{
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    #line1{
+      opacity: 0.6;
+    }
+    #line2{
+      font-weight: 800;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body class="parent">
+  <div class="half-pane left-pane">
+    <div id="count">234</div>
+    <div id="subtext">
+      <div id="line1">days left to</div>
+      <div id="line2">Chai Comes Home!</div>
+    </div>
+  </div>
+  <div class="half-pane right-pane">
+    <img id="img" src="./puppy.png" alt="">
+  </div>
+  <script>
+    // get elements
+    const elImg = document.getElementById("img")
+    const elCount = document.getElementById("count")
+    const elLineOne = document.getElementById("line1")
+
+    // get urls params
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const character = urlParams.get('character');
+    const date = urlParams.get('date');
+
+    // calculate days and weeks
+    const daysLeft = daysUntilInputDate(date)
+    const weeksLeft = daysToWeeks(daysLeft)
+
+    // is it puppy or kitty
+    if(character === "puppy"){
+      document.body.style = `background-color:#ffbb4d`
+      elImg.src = "./puppy.png" 
+      elCount.innerHTML = weeksLeft
+      elLineOne.innerHTML = "weeks left to"
+    }else{
+      document.body.style = `background-color:#38c3ff`
+      elImg.src = "./puppy.png" 
+      elImg.src = "./kitty.png" 
+      elCount.innerHTML = daysLeft
+      elLineOne.innerHTML = "days left to"
+    }
+
+    function daysUntilInputDate(inputDate) {
+      // Parse the input date string into a Date object
+      var parts = inputDate.split('/');
+      var day = parseInt(parts[0], 10);
+      var month = parseInt(parts[1], 10) - 1; // Months are zero-based
+      var year = parseInt(parts[2], 10) + 2000; // Assuming the year is in YY format, add 2000 to get the full year
+      var inputDateObj = new Date(year, month, day);
+      // Get the current date
+      var currentDateObj = new Date();
+      // Calculate the difference between the input date and the current date in milliseconds
+      var timeDiff = inputDateObj.getTime() - currentDateObj.getTime();
+      // Convert the difference from milliseconds to days
+      var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      return daysDiff;
+    }
+
+    function daysToWeeks(days){
+      return Math.floor(days/7);
+    }
+  </script>
+</body>
+</html>
